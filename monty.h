@@ -1,20 +1,22 @@
-#ifndef _MONTY_H
-#define _MONTY_H
+#ifndef MONTY_H
+#define MONTY_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <stddef.h>
-#include <string.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <sys/stat.h>
+#include <stdlib.h>
 
-#define STACK 0
-#define QUEUE 1
-#define DELIMS " \n\t\a\b"
-
-/* GLOBAL OPCODE TOKENS */
-extern char **op_toks;
+#define INSTRUCTIONS            \
+	{                         \
+		{"push", push},     \
+		    {"pall", pall}, \
+		    {"pint", pint}, \
+		    {"pop", pop},   \
+		    {"swap", swap}, \
+		    {"add", _add},  \
+		    {"nop", nop},   \
+		{                   \
+			NULL, NULL    \
+		}                   \
+	}
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -46,20 +48,44 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/* PRIMARY INTERPRETOR FUNCTIONS */
-int init_stack(stack_t **stack);
-int check_mode(stack_t *stack);
-void free_stack(stack_t **stack);
-int monty(FILE *script_fd);
-unsigned int token_arr_len(void);
-void free_tokens(void);
-void set_op_tok_error(int error_code);
+/**
+* struct help - argument for the current opcode
+* @data_struct: stack mode, stack (default) and queue
+* @argument: the arguments of the string
+*
+* Description: global structure used to pass data around the functions easily
+*/
+typedef struct help
+{
+	int data_struct;
+	char *argument;
+} help;
+help global;
 
-/* ERROR MESSAGES & ERROR CODES */
-int usage_error(void);
-int malloc_error(void);
-int f_open_error(char *filename);
-int no_int_error(unsigned int line_number);
-int unknown_op_error(char *opcode, unsigned int line_number);
+/* stack utility functions available in linked_list.c */
+stack_t *add_node(stack_t **stack, const int n);
+stack_t *queue_node(stack_t **stack, const int n);
+void free_stack(stack_t *stack);
+size_t print_stack(const stack_t *stack);
 
-#endif /* _MONTY_H */
+void push(stack_t **stack, unsigned int line_cnt);
+void pall(stack_t **stack, unsigned int line_cnt);
+void pint(stack_t **stack, unsigned int line_cnt);
+void swap(stack_t **stack, unsigned int line_cnt);
+void pop(stack_t **stack, unsigned int line_cnt);
+void nop(stack_t **stack, unsigned int line_cnt);
+void _div(stack_t **stack, unsigned int line_cnt);
+void _add(stack_t **stack, unsigned int line_cnt);
+void _sub(stack_t **stack, unsigned int line_cnt);
+void _mul(stack_t **stack, unsigned int line_cnt);
+void mod(stack_t **stack, unsigned int line_cnt);
+void pchar(stack_t **stack, unsigned int line_cnt);
+void pstr(stack_t **stack, unsigned int line_cnt);
+void rotl(stack_t **stack, unsigned int line_count);
+void rotr(stack_t **stack, unsigned int line_count);
+void opcode(stack_t **stack, char *str, unsigned int line_cnt);
+
+int is_digit(char *string);
+int isnumber(char *str);
+
+#endif /* MONTY_H */
