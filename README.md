@@ -55,3 +55,12 @@ __The monty program__
 > > - an error occured
 > * If you can’t malloc anymore, print the error message `Error: malloc failed`, followed by a new line, and exit with status `EXIT_FAILURE.`
 > * You have to use `malloc` and `free` and are not allowed to use any other function from `man malloc` (realloc, calloc, …)
+
+## Compilation & Output
+* The code is compiled in the following manner:
+
+	$ gcc -Wall -Werror -Wextra -pedantic -std=c89 *.c -o monty
+
+* Any output must be printed on `stdout`
+* Any error message must be printed on `sterr`
+> * [Here is a link to a GitHub repository](https://github.com/Kinyarasam/stderred) that could help you making sure your errors are printed on stderr
