@@ -55,4 +55,11 @@ unsigned int token_arr_len(void);
 void free_tokens(void);
 void set_op_tok_error(int error_code);
 
+/* ERROR MESSAGES & ERROR CODES */
+int usage_error(void);
+int malloc_error(void);
+int f_open_error(char *filename);
+int no_int_error(unsigned int line_number);
+int unknown_op_error(char *opcode, unsigned int line_number);
+
 #endif /* _MONTY_H */
